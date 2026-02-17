@@ -1,1 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GLHF | Good Luck Have Fun</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        body { 
+            background-color: #F2F2F2; 
+            color: #2D2D2D; /* Dark charcoal for readability */
+            font-family: 'Space Grotesk', sans-serif; 
+            margin: 0;
+            padding: 0;
+        }
+        .divider {
+            height: 1px;
+            width: 100%;
+            max-width: 600px;
+            background: rgba(0, 0, 0, 0.05);
+            margin: 60px auto 20px auto;
+        }
+        /* Security Modal Styling */
+        #gatekeeper-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.98); z-index: 10000;
+            display: flex; align-items: center; justify-content: center;
+            backdrop-filter: blur(10px); font-family: sans-serif;
+        }
+        #gatekeeper-modal {
+            background: #000; color: #fff; padding: 40px; 
+            border-radius: 2px; max-width: 480px; width: 85%;
+            text-align: center; border: 1px solid #222;
+        }
+        #gatekeeper-modal h2 { margin-top: 0; font-size: 18px; letter-spacing: 2px; font-weight: bold; }
+        #gatekeeper-modal p { font-size: 14px; line-height: 1.6; color: #aaa; margin: 25px 0; }
+        #confirm-btn {
+            background: #fff; color: #000; padding: 12px 35px; 
+            border: none; cursor: pointer; font-weight: bold; text-transform: uppercase;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center">
 
+    <div id="gatekeeper-overlay" style="display: none;">
+        <div id="gatekeeper-modal">
+            <h2 id="display-title">SECURITY NOTICE</h2>
+            <p id="display-message">Initialising...</p>
+            <button id="confirm-btn" onclick="validateEntry()">Proceed</button>
+        </div>
+    </div>
+
+    <main class="w-full max-w-4xl px-6 py-12 text-center flex-grow">
+        
+        <div class="mb-4">
+            <img src="https://coral-absolute-shrimp-168.mypinata.cloud/ipfs/bafkreibh6fa2ni3vjrxhi2xtwb4wiezvpwb6acqxscwo32fwbbm7tffdby" 
+                 alt="GLHF" class="mx-auto w-full max-w-lg">
+        </div>
+
+        <div class="max-w-2xl mx-auto mb-16">
+            <p class="text-xl md:text-2xl leading-relaxed">
+                Inspired by the bold, stacked geometry of iconic pop art, the $GLHF emblem represents four themes uniting degen spirit: Grit, Loyalty, Heart, and Freedom. We bond chaotic energy and shared optimism.
+            </p>
+        </div>
+
+        <div class="space-y-4">
+            <h2 class="tracking-tight text-black">CONTRACT ADDRESS</h2>
+            <p class="md:text-xl font-mono break-all opacity-80">
+                ...
+            </p>
+        </div>
+
+    </main>
+
+    <footer class="w-full pb-16 text-center">
+        <div class="divider"></div>
+        <div class="px-6 text-[11px] leading-relaxed opacity-50 font-sans">
+            <p class="max-w-2xl mx-auto">
+                Disclaimer: GLHF is a meme coin with no expectation of financial return. The team does not provide financial or legal advice. 
+                Ownership of GLHF does not represent a share in any company or entity. Participation in the Solana ecosystem carries 
+                high risk; never contribute more than you can afford to lose. All trademarked assets are for community use only.
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        const PROJECT_ID = "glhf_token"; 
+        const PROJECT_NAME = "GLHF"; 
+        const MODAL_TITLE = "⚠️ RISK DISCLOSURE";
+        const EXPIRY_DAYS = 30;
+
+        const overlay = document.getElementById('gatekeeper-overlay');
+        const msgBlock = document.getElementById('display-message');
+        const titleBlock = document.getElementById('display-title');
+        const storageKey = 'gatekeeper_' + PROJECT_ID;
+
+        function validateEntry() {
+            const now = new Date();
+            localStorage.setItem(storageKey, now.getTime());
+            overlay.style.display = 'none';
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const lastAccepted = localStorage.getItem(storageKey);
+            const now = new Date().getTime();
+            const thirtyDaysInMs = EXPIRY_DAYS * 24 * 60 * 60 * 1000;
+
+            if (!lastAccepted || (now - lastAccepted) > thirtyDaysInMs) {
+                titleBlock.innerText = MODAL_TITLE;
+                msgBlock.innerHTML = `${PROJECT_NAME} is a digital collectible on the Solana blockchain. It carries no intrinsic value and is intended for entertainment purposes. By proceeding, you acknowledge that you are not purchasing a security, financial instrument, or investment contract.`;
+                overlay.style.display = 'flex';
+            }
+        });
+    </script>
+</body>
+</html>
